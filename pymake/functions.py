@@ -3,9 +3,9 @@ Makefile functions.
 """
 from __future__ import print_function
 
-import parser, util
+from pymake import parser, util
 import subprocess, os, logging, sys
-from globrelative import glob
+from pymake.globrelative import glob
 from pymake import errors
 
 log = logging.getLogger('pymake.data')
@@ -771,7 +771,7 @@ class ShellFunction(Function):
     __slots__ = Function.__slots__
 
     def resolve(self, makefile, variables, fd, setting):
-        from process import prepare_command
+        from pymake.process import prepare_command
         cline = self._arguments[0].resolvestr(makefile, variables, setting)
         executable, cline = prepare_command(cline, makefile.workdir, self.loc)
 
@@ -793,7 +793,7 @@ class ShellFunction(Function):
             os.environ['PATH'] = oldpath
 
         stdout, stderr = p.communicate()
-        stdout = stdout.replace('\r\n', '\n')
+        stdout = stdout.decode("utf-8").replace('\r\n', '\n')
         if stdout.endswith('\n'):
             stdout = stdout[:-1]
         stdout = stdout.replace('\n', ' ')
@@ -871,4 +871,4 @@ functionmap = {
     'info': InfoFunction,
 }
 
-import data
+from pymake import data
