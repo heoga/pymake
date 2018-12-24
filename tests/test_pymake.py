@@ -54,7 +54,7 @@ def make_metadata(make):
         elif key == 'skip':
             options['skip'] = True
         else:
-            print("%s: Unexpected #T key: %s" % (makefile, key), file=sys.stderr)
+            sys.stderr.write("%s: Unexpected #T key: %s\n" % (makefile, key))
             assert False
     return options
 
